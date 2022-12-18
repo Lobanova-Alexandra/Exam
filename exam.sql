@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Дек 18 2022 г., 10:52
+-- Время создания: Дек 18 2022 г., 18:37
 -- Версия сервера: 10.4.24-MariaDB
 -- Версия PHP: 8.1.6
 
@@ -32,8 +32,15 @@ CREATE TABLE `application` (
   `id_service` int(11) NOT NULL,
   `id_employee` int(11) NOT NULL,
   `id_client` int(11) NOT NULL,
-  `date_registration` date NOT NULL
+  `date_registration` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `application`
+--
+
+INSERT INTO `application` (`id_application`, `id_service`, `id_employee`, `id_client`, `date_registration`) VALUES
+(4, 2, 2, 2, '22.22.2222');
 
 -- --------------------------------------------------------
 
@@ -50,6 +57,13 @@ CREATE TABLE `client` (
   `email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `client`
+--
+
+INSERT INTO `client` (`id_client`, `name_client`, `sname_client`, `patron_client`, `phone_number`, `email`) VALUES
+(2, 'Иван', 'ыы', 'ы', '+7 (444) 44-44-444', '444444');
+
 -- --------------------------------------------------------
 
 --
@@ -60,10 +74,17 @@ CREATE TABLE `employee` (
   `id_employee` int(11) NOT NULL,
   `name_employee` varchar(50) NOT NULL,
   `sname_employee` varchar(50) NOT NULL,
-  `patron_employee` int(50) NOT NULL,
-  `date_birth` date NOT NULL,
+  `patron_employee` varchar(50) NOT NULL,
+  `date_birth` varchar(30) NOT NULL,
   `phone_number` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `employee`
+--
+
+INSERT INTO `employee` (`id_employee`, `name_employee`, `sname_employee`, `patron_employee`, `date_birth`, `phone_number`) VALUES
+(3, 'Дмитрий', 'а', 'а', '33.33.3333', '+7 (333) 33-33-333');
 
 -- --------------------------------------------------------
 
@@ -74,8 +95,15 @@ CREATE TABLE `employee` (
 CREATE TABLE `service` (
   `id_service` int(11) NOT NULL,
   `name_service` varchar(50) NOT NULL,
-  `cost_service` float NOT NULL
+  `cost_service` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `service`
+--
+
+INSERT INTO `service` (`id_service`, `name_service`, `cost_service`) VALUES
+(2, 'Ремонт', 10);
 
 --
 -- Индексы сохранённых таблиц
@@ -85,10 +113,7 @@ CREATE TABLE `service` (
 -- Индексы таблицы `application`
 --
 ALTER TABLE `application`
-  ADD PRIMARY KEY (`id_application`),
-  ADD KEY `id_client` (`id_client`),
-  ADD KEY `id_employee` (`id_employee`),
-  ADD KEY `id_service` (`id_service`);
+  ADD PRIMARY KEY (`id_application`);
 
 --
 -- Индексы таблицы `client`
@@ -116,37 +141,25 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT для таблицы `application`
 --
 ALTER TABLE `application`
-  MODIFY `id_application` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_application` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `client`
 --
 ALTER TABLE `client`
-  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id_employee` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_employee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `service`
 --
 ALTER TABLE `service`
-  MODIFY `id_service` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Ограничения внешнего ключа сохраненных таблиц
---
-
---
--- Ограничения внешнего ключа таблицы `application`
---
-ALTER TABLE `application`
-  ADD CONSTRAINT `application_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `client` (`id_client`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `application_ibfk_2` FOREIGN KEY (`id_employee`) REFERENCES `employee` (`id_employee`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `application_ibfk_3` FOREIGN KEY (`id_service`) REFERENCES `service` (`id_service`) ON DELETE CASCADE ON UPDATE CASCADE;
+  MODIFY `id_service` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
