@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Дек 18 2022 г., 18:37
+-- Время создания: Дек 18 2022 г., 19:54
 -- Версия сервера: 10.4.24-MariaDB
 -- Версия PHP: 8.1.6
 
@@ -40,7 +40,8 @@ CREATE TABLE `application` (
 --
 
 INSERT INTO `application` (`id_application`, `id_service`, `id_employee`, `id_client`, `date_registration`) VALUES
-(4, 2, 2, 2, '22.22.2222');
+(5, 4, 3, 3, '12.12.2022'),
+(6, 2, 4, 3, '11.10.2022');
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,8 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`id_client`, `name_client`, `sname_client`, `patron_client`, `phone_number`, `email`) VALUES
-(2, 'Иван', 'ыы', 'ы', '+7 (444) 44-44-444', '444444');
+(3, 'Игорь', 'Цветков', 'Иванович', '+7 (344) 55-34-343', 'hgfdg@gmil.com'),
+(4, 'Анастасия', 'Горбунова', 'Валерьевна', '+7 (848) 37-46-435', 'jhdfgfg@mail.ru');
 
 -- --------------------------------------------------------
 
@@ -84,7 +86,8 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`id_employee`, `name_employee`, `sname_employee`, `patron_employee`, `date_birth`, `phone_number`) VALUES
-(3, 'Дмитрий', 'а', 'а', '33.33.3333', '+7 (333) 33-33-333');
+(4, 'Дмитрий', 'Иванов', 'Сергеевич', '23.09.2000', '+7 (387) 74-63-746'),
+(5, 'Иван', 'Волков', 'Александрович', '04.02.1988', '+7 (747) 63-56-523');
 
 -- --------------------------------------------------------
 
@@ -103,7 +106,10 @@ CREATE TABLE `service` (
 --
 
 INSERT INTO `service` (`id_service`, `name_service`, `cost_service`) VALUES
-(2, 'Ремонт', 10);
+(3, 'Ремонт двигателя', 10000),
+(4, 'Замена дисков', 2000),
+(5, 'Замена покрышек', 2000),
+(6, 'Замена стекла', 5000);
 
 --
 -- Индексы сохранённых таблиц
@@ -141,25 +147,25 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT для таблицы `application`
 --
 ALTER TABLE `application`
-  MODIFY `id_application` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_application` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `client`
 --
 ALTER TABLE `client`
-  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id_employee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_employee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `service`
 --
 ALTER TABLE `service`
-  MODIFY `id_service` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_service` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

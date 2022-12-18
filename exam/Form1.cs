@@ -14,9 +14,13 @@ namespace exam
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
+           
             InitializeComponent();
+            tabControl1.Enabled = false;
+            DialogResult check = MessageBox.Show("Войти под пользователем Старший менеджер? Если НЕТ, то будет выполнен вход под пользователем Менеджер","Выберите пользователя", MessageBoxButtons.YesNo);
 
             // Настройка стиля
             panel1.BackColor = Color.FromArgb(189, 214, 238);
@@ -26,8 +30,30 @@ namespace exam
             dataGridView2.BackgroundColor = Color.FromArgb(189, 214, 238);
             dataGridView3.BackgroundColor = Color.FromArgb(189, 214, 238);
             dataGridView1.BackgroundColor = Color.FromArgb(189, 214, 238);
-            
 
+            if (check == System.Windows.Forms.DialogResult.Yes) { tabControl1.Enabled = true; }
+
+            if (check == System.Windows.Forms.DialogResult.No)
+            {
+                button10.Visible = false;
+                button10.Enabled = false;
+                button9.Visible = false;
+                button9.Enabled = false;
+                button11.Visible = false;
+                button11.Enabled = false;
+                button5.Visible = false;
+                button5.Enabled = false;
+                button6.Visible = false;
+                button6.Enabled = false;
+                button7.Visible = false;
+                button7.Enabled = false;
+                button2.Visible = false;
+                button2.Enabled = false;
+                button3.Visible = false;
+                button3.Enabled = false;
+                button4.Visible = false;
+                button4.Enabled = false;
+            }
 
             //Проверка подключения
             string connect = "server=localhost; user=root; database=exam;";

@@ -29,7 +29,7 @@ namespace exam
 
         public void button1_Click(object sender, EventArgs e)
         {
-            if (((textBox1.Text == "smanager") || (textBox1.Text == "manager")) && (textBox2.Text == "1111"))
+            if (((textBox1.Text == "smanager") || (textBox1.Text == "manager"))  && (textBox2.Text == "1111"))
             {
                 form1.Show();
             }
