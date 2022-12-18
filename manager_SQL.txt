@@ -1,0 +1,9 @@
+GRANT SELECT ON *.* TO `manager`@`localhost` IDENTIFIED BY PASSWORD '*89C6B530AA78695E257E55D63C00A6EC9AD3E977';
+
+GRANT SELECT, INSERT ON `exam`.`application` TO `manager`@`localhost`;
+
+GRANT SELECT ON `exam`.`service` TO `manager`@`localhost`;
+
+GRANT SELECT ON `exam`.`client` TO `manager`@`localhost`;
+
+GRANT SELECT ON `exam`.`employee` TO `manager`@`localhost`;
