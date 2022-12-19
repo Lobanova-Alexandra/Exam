@@ -45,11 +45,6 @@ namespace exam
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.id_application = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id_service_app = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id_employee_app = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id_client_app = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.date_registration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
@@ -83,6 +78,11 @@ namespace exam
             this.patron_employee = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.date_birth = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.phone_number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id_application = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id_service_app = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id_employee_app = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id_client_app = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.date_registration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -245,6 +245,8 @@ namespace exam
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id_application,
@@ -258,42 +260,6 @@ namespace exam
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.Size = new System.Drawing.Size(700, 412);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // id_application
-            // 
-            this.id_application.HeaderText = "id";
-            this.id_application.MinimumWidth = 6;
-            this.id_application.Name = "id_application";
-            this.id_application.ReadOnly = true;
-            this.id_application.Width = 125;
-            // 
-            // id_service_app
-            // 
-            this.id_service_app.HeaderText = "id услуги";
-            this.id_service_app.MinimumWidth = 6;
-            this.id_service_app.Name = "id_service_app";
-            this.id_service_app.Width = 125;
-            // 
-            // id_employee_app
-            // 
-            this.id_employee_app.HeaderText = "id сотрудника";
-            this.id_employee_app.MinimumWidth = 6;
-            this.id_employee_app.Name = "id_employee_app";
-            this.id_employee_app.Width = 125;
-            // 
-            // id_client_app
-            // 
-            this.id_client_app.HeaderText = "id клиента";
-            this.id_client_app.MinimumWidth = 6;
-            this.id_client_app.Name = "id_client_app";
-            this.id_client_app.Width = 125;
-            // 
-            // date_registration
-            // 
-            this.date_registration.HeaderText = "дата регистрации заявки";
-            this.date_registration.MinimumWidth = 6;
-            this.date_registration.Name = "date_registration";
-            this.date_registration.Width = 125;
             // 
             // tabPage2
             // 
@@ -352,6 +318,8 @@ namespace exam
             // 
             // dataGridView3
             // 
+            this.dataGridView3.AllowUserToAddRows = false;
+            this.dataGridView3.AllowUserToDeleteRows = false;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView3.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id_service,
@@ -402,6 +370,8 @@ namespace exam
             // 
             // dataGridView2
             // 
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id_client,
@@ -556,6 +526,8 @@ namespace exam
             // 
             // dataGridViewEmployee
             // 
+            this.dataGridViewEmployee.AllowUserToAddRows = false;
+            this.dataGridViewEmployee.AllowUserToDeleteRows = false;
             this.dataGridViewEmployee.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewEmployee.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id_employee,
@@ -613,6 +585,43 @@ namespace exam
             this.phone_number.MinimumWidth = 6;
             this.phone_number.Name = "phone_number";
             this.phone_number.Width = 125;
+            // 
+            // id_application
+            // 
+            this.id_application.HeaderText = "id";
+            this.id_application.MinimumWidth = 6;
+            this.id_application.Name = "id_application";
+            this.id_application.ReadOnly = true;
+            this.id_application.Width = 125;
+            // 
+            // id_service_app
+            // 
+            this.id_service_app.HeaderText = "id услуги";
+            this.id_service_app.MinimumWidth = 6;
+            this.id_service_app.Name = "id_service_app";
+            this.id_service_app.Width = 125;
+            // 
+            // id_employee_app
+            // 
+            this.id_employee_app.HeaderText = "id сотрудника";
+            this.id_employee_app.MinimumWidth = 6;
+            this.id_employee_app.Name = "id_employee_app";
+            this.id_employee_app.Width = 125;
+            // 
+            // id_client_app
+            // 
+            this.id_client_app.HeaderText = "id клиента";
+            this.id_client_app.MinimumWidth = 6;
+            this.id_client_app.Name = "id_client_app";
+            this.id_client_app.Width = 125;
+            // 
+            // date_registration
+            // 
+            this.date_registration.HeaderText = "дата регистрации заявки";
+            this.date_registration.MinimumWidth = 6;
+            this.date_registration.Name = "date_registration";
+            this.date_registration.ReadOnly = true;
+            this.date_registration.Width = 125;
             // 
             // Form1
             // 

@@ -65,6 +65,7 @@ namespace exam
                 label3.Text = "OK";
                 conn.Close();
                 tabControl1.Enabled = true;
+                
             }
             catch
             {
@@ -73,6 +74,14 @@ namespace exam
                 label3.Text = "NO";
                 DialogResult res = MessageBox.Show("Не удалось подключиться к серверу. Проверьте соединение", "Ошибка", MessageBoxButtons.OK);
             }
+            
+            
+            conn.Open();
+            LoadApp(conn);
+            LoadClient(conn);
+            LoadEmployee(conn);
+            LoadService(conn);
+            conn.Close();
         }
 
         //кнопка повторить подключение
@@ -127,63 +136,105 @@ namespace exam
                 dataGridViewEmployee.Rows.Add(s);
         }
 
+        //проверка подключеия
+        public bool check()
+        {
+            bool c = true;
+            string connect = "server=localhost; user=root; database=exam;";
+            MySqlConnection conn = new MySqlConnection(connect);
+            try
+            {
+                conn.Open();
+                label3.ForeColor = Color.Green;
+                label3.Text = "OK";
+                conn.Close();
+                tabControl1.Enabled = true;
+
+            }
+            catch
+            {
+                tabControl1.Enabled = false;
+                label3.ForeColor = Color.Red;
+                label3.Text = "NO";
+                DialogResult res = MessageBox.Show("Не удалось подключиться к серверу. Проверьте соединение", "Ошибка", MessageBoxButtons.OK);
+                c = false;
+            }
+            return c;
+        }
+
         //загрузка сотрудников
         private void button1_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            MySqlConnection conn = new MySqlConnection(connect);
-            conn.Open();
-            LoadEmployee(conn);
-            conn.Close();
+            if (check() == true)
+            {
+                string connect = "server=localhost; user=root; database=exam;";
+                MySqlConnection conn = new MySqlConnection(connect);
+                conn.Open();
+                LoadEmployee(conn);
+                conn.Close();
+            }
         }
         
         //добавление сотрудника
         private void button4_Click(object sender, EventArgs e)
         {
-            Form2 newForm = new Form2();
-            newForm.Show();
+            if (check() == true)
+            {
+                Form2 newForm = new Form2();
+                newForm.Show();
+            }
         }
 
 
         //изменение сотрудника
         private void button2_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            string str = this.dataGridViewEmployee.CurrentRow.Cells["id_employee"].Value.ToString();
-            DialogResult check = MessageBox.Show($"Вы хотите изменить запись {str}?", "Изменение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (check == System.Windows.Forms.DialogResult.Yes)
+            if (check() == true)
             {
-                MySqlConnection conn = new MySqlConnection(connect);
-                conn.Open();
-                string s = this.dataGridViewEmployee.CurrentCell.OwningColumn.Name.ToString();
-                string sql = $"UPDATE employee SET {s} = @new WHERE employee.id_employee = @num";
-                MySqlCommand command = new MySqlCommand(sql, conn);
-                command.Parameters.Add(new MySqlParameter("@new", this.dataGridViewEmployee.CurrentCell.Value));
-                command.Parameters.Add(new MySqlParameter("@num", this.dataGridViewEmployee.CurrentRow.Cells["id_employee"].Value));
-                command.ExecuteNonQuery();
-                MessageBox.Show($"Запись {str} успешно изменена", "Изменение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadEmployee(conn);
-                conn.Close();
+                string connect = "server=localhost; user=root; database=exam;";
+                string str = this.dataGridViewEmployee.CurrentRow.Cells["id_employee"].Value.ToString();
+                if (this.dataGridViewEmployee.CurrentCell.Value == null) { MessageBox.Show($"Введите корректное значение!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                else
+                {
+                    DialogResult check = MessageBox.Show($"Вы хотите изменить запись {str}?", "Изменение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (check == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        MySqlConnection conn = new MySqlConnection(connect);
+                        conn.Open();
+                        string s = this.dataGridViewEmployee.CurrentCell.OwningColumn.Name.ToString();
+                        string sql = $"UPDATE employee SET {s} = @new WHERE employee.id_employee = @num";
+                        MySqlCommand command = new MySqlCommand(sql, conn);
+                        command.Parameters.Add(new MySqlParameter("@new", this.dataGridViewEmployee.CurrentCell.Value));
+                        command.Parameters.Add(new MySqlParameter("@num", this.dataGridViewEmployee.CurrentRow.Cells["id_employee"].Value));
+                        command.ExecuteNonQuery();
+                        MessageBox.Show($"Запись {str} успешно изменена", "Изменение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadEmployee(conn);
+                        conn.Close();
+                    }
+                }
             }
         }
 
         //удаление сотрудника
         private void button3_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            string str = this.dataGridViewEmployee.CurrentRow.Cells["id_employee"].Value.ToString();
-            DialogResult check = MessageBox.Show($"Вы хотите удалить запись {str}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (check == System.Windows.Forms.DialogResult.Yes)
+            if (check() == true)
             {
-                MySqlConnection conn = new MySqlConnection(connect);
-                conn.Open();
-                string sql = "DELETE FROM employee WHERE id_employee = @num";
-                MySqlCommand command = new MySqlCommand(sql, conn);
-                command.Parameters.Add(new MySqlParameter("@num", this.dataGridViewEmployee.CurrentRow.Cells["id_employee"].Value));
-                command.ExecuteNonQuery();
-                MessageBox.Show($"Запись {str} успешно удалена", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadEmployee(conn);
-                conn.Close();
+                string connect = "server=localhost; user=root; database=exam;";
+                string str = this.dataGridViewEmployee.CurrentRow.Cells["id_employee"].Value.ToString();
+                DialogResult check = MessageBox.Show($"Вы хотите удалить запись {str}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (check == System.Windows.Forms.DialogResult.Yes)
+                {
+                    MySqlConnection conn = new MySqlConnection(connect);
+                    conn.Open();
+                    string sql = "DELETE FROM employee WHERE id_employee = @num";
+                    MySqlCommand command = new MySqlCommand(sql, conn);
+                    command.Parameters.Add(new MySqlParameter("@num", this.dataGridViewEmployee.CurrentRow.Cells["id_employee"].Value));
+                    command.ExecuteNonQuery();
+                    MessageBox.Show($"Запись {str} успешно удалена", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadEmployee(conn);
+                    conn.Close();
+                }
             }
         }
 
@@ -214,59 +265,75 @@ namespace exam
         //обновление клиентов
         private void button8_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            MySqlConnection conn = new MySqlConnection(connect);
-            conn.Open();
-            LoadClient(conn);
-            conn.Close();
+            if (check() == true)
+            {
+                string connect = "server=localhost; user=root; database=exam;";
+                MySqlConnection conn = new MySqlConnection(connect);
+                conn.Open();
+                LoadClient(conn);
+                conn.Close();
+            }
         }
 
         //добавление клиента
         private void button5_Click(object sender, EventArgs e)
         {
-            Form3 newForm = new Form3();
-            newForm.Show();
+            if (check() == true)
+            {
+                Form3 newForm = new Form3();
+                newForm.Show();
+            }
         }
 
         //изменение клиента
         private void button7_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            string str = this.dataGridView2.CurrentRow.Cells["id_client"].Value.ToString();
-            DialogResult check = MessageBox.Show($"Вы хотите изменить запись {str}?", "Изменение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (check == System.Windows.Forms.DialogResult.Yes)
+            if (check() == true)
             {
-                MySqlConnection conn = new MySqlConnection(connect);
-                conn.Open();
-                string s = this.dataGridView2.CurrentCell.OwningColumn.Name.ToString();
-                string sql = $"UPDATE client SET {s} = @new WHERE client.id_client = @num";
-                MySqlCommand command = new MySqlCommand(sql, conn);
-                command.Parameters.Add(new MySqlParameter("@new", this.dataGridView2.CurrentCell.Value));
-                command.Parameters.Add(new MySqlParameter("@num", this.dataGridView2.CurrentRow.Cells["id_client"].Value));
-                command.ExecuteNonQuery();
-                MessageBox.Show($"Запись {str} успешно изменена", "Изменение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadClient(conn);
-                conn.Close();
+                string connect = "server=localhost; user=root; database=exam;";
+                string str = this.dataGridView2.CurrentRow.Cells["id_client"].Value.ToString();
+                if (this.dataGridView2.CurrentCell.Value == null) { MessageBox.Show($"Введите корректное значение!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                else
+                {
+                    DialogResult check = MessageBox.Show($"Вы хотите изменить запись {str}?", "Изменение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (check == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        MySqlConnection conn = new MySqlConnection(connect);
+                        conn.Open();
+                        string s = this.dataGridView2.CurrentCell.OwningColumn.Name.ToString();
+                        string sql = $"UPDATE client SET {s} = @new WHERE client.id_client = @num";
+                        MySqlCommand command = new MySqlCommand(sql, conn);
+                        command.Parameters.Add(new MySqlParameter("@new", this.dataGridView2.CurrentCell.Value));
+                        command.Parameters.Add(new MySqlParameter("@num", this.dataGridView2.CurrentRow.Cells["id_client"].Value));
+                        command.ExecuteNonQuery();
+                        MessageBox.Show($"Запись {str} успешно изменена", "Изменение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadClient(conn);
+                        conn.Close();
+                    }
+                }
             }
         }
 
         //удаление клиента
         private void button6_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            string str = this.dataGridView2.CurrentRow.Cells["id_client"].Value.ToString();
-            DialogResult check = MessageBox.Show($"Вы хотите удалить запись {str}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (check == System.Windows.Forms.DialogResult.Yes)
+            if (check() == true)
             {
-                MySqlConnection conn = new MySqlConnection(connect);
-                conn.Open();
-                string sql = "DELETE FROM client WHERE id_client = @num";
-                MySqlCommand command = new MySqlCommand(sql, conn);
-                command.Parameters.Add(new MySqlParameter("@num", this.dataGridView2.CurrentRow.Cells["id_client"].Value));
-                command.ExecuteNonQuery();
-                MessageBox.Show($"Запись {str} успешно удалена", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadClient(conn);
-                conn.Close();
+                string connect = "server=localhost; user=root; database=exam;";
+                string str = this.dataGridView2.CurrentRow.Cells["id_client"].Value.ToString();
+                DialogResult check = MessageBox.Show($"Вы хотите удалить запись {str}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (check == System.Windows.Forms.DialogResult.Yes)
+                {
+                    MySqlConnection conn = new MySqlConnection(connect);
+                    conn.Open();
+                    string sql = "DELETE FROM client WHERE id_client = @num";
+                    MySqlCommand command = new MySqlCommand(sql, conn);
+                    command.Parameters.Add(new MySqlParameter("@num", this.dataGridView2.CurrentRow.Cells["id_client"].Value));
+                    command.ExecuteNonQuery();
+                    MessageBox.Show($"Запись {str} успешно удалена", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadClient(conn);
+                    conn.Close();
+                }
             }
         }
 
@@ -294,59 +361,75 @@ namespace exam
         //обновление услуг
         private void button12_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            MySqlConnection conn = new MySqlConnection(connect);
-            conn.Open();
-            LoadService(conn);
-            conn.Close();
+            if (check() == true)
+            {
+                string connect = "server=localhost; user=root; database=exam;";
+                MySqlConnection conn = new MySqlConnection(connect);
+                conn.Open();
+                LoadService(conn);
+                conn.Close();
+            }
         }
 
         //добавление услуг
         private void button9_Click(object sender, EventArgs e)
         {
-            Form4 newForm = new Form4();
-            newForm.Show();
+            if (check() == true)
+            {
+                Form4 newForm = new Form4();
+                newForm.Show();
+            }
         }
 
         //изменение услуг
         private void button11_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            string str = this.dataGridView3.CurrentRow.Cells["id_service"].Value.ToString();
-            DialogResult check = MessageBox.Show($"Вы хотите изменить запись {str}?", "Изменение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (check == System.Windows.Forms.DialogResult.Yes)
+            if (check() == true)
             {
-                MySqlConnection conn = new MySqlConnection(connect);
-                conn.Open();
-                string s = this.dataGridView3.CurrentCell.OwningColumn.Name.ToString();
-                string sql = $"UPDATE service SET {s} = @new WHERE service.id_service = @num";
-                MySqlCommand command = new MySqlCommand(sql, conn);
-                command.Parameters.Add(new MySqlParameter("@new", this.dataGridView3.CurrentCell.Value));
-                command.Parameters.Add(new MySqlParameter("@num", this.dataGridView3.CurrentRow.Cells["id_service"].Value));
-                command.ExecuteNonQuery();
-                MessageBox.Show($"Запись {str} успешно изменена", "Изменение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadClient(conn);
-                conn.Close();
+                string connect = "server=localhost; user=root; database=exam;";
+                string str = this.dataGridView3.CurrentRow.Cells["id_service"].Value.ToString();
+                if (this.dataGridView3.CurrentCell.Value == null) { MessageBox.Show($"Введите корректное значение!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                else
+                {
+                    DialogResult check = MessageBox.Show($"Вы хотите изменить запись {str}?", "Изменение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (check == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        MySqlConnection conn = new MySqlConnection(connect);
+                        conn.Open();
+                        string s = this.dataGridView3.CurrentCell.OwningColumn.Name.ToString();
+                        string sql = $"UPDATE service SET {s} = @new WHERE service.id_service = @num";
+                        MySqlCommand command = new MySqlCommand(sql, conn);
+                        command.Parameters.Add(new MySqlParameter("@new", this.dataGridView3.CurrentCell.Value));
+                        command.Parameters.Add(new MySqlParameter("@num", this.dataGridView3.CurrentRow.Cells["id_service"].Value));
+                        command.ExecuteNonQuery();
+                        MessageBox.Show($"Запись {str} успешно изменена", "Изменение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadClient(conn);
+                        conn.Close();
+                    }
+                }
             }
         }
 
         //удаление услуги
         private void button10_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            string str = this.dataGridView3.CurrentRow.Cells["id_service"].Value.ToString();
-            DialogResult check = MessageBox.Show($"Вы хотите удалить запись {str}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (check == System.Windows.Forms.DialogResult.Yes)
+            if (check() == true)
             {
-                MySqlConnection conn = new MySqlConnection(connect);
-                conn.Open();
-                string sql = "DELETE FROM service WHERE id_service = @num";
-                MySqlCommand command = new MySqlCommand(sql, conn);
-                command.Parameters.Add(new MySqlParameter("@num", this.dataGridView3.CurrentRow.Cells["id_service"].Value));
-                command.ExecuteNonQuery();
-                MessageBox.Show($"Запись {str} успешно удалена", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadClient(conn);
-                conn.Close();
+                string connect = "server=localhost; user=root; database=exam;";
+                string str = this.dataGridView3.CurrentRow.Cells["id_service"].Value.ToString();
+                DialogResult check = MessageBox.Show($"Вы хотите удалить запись {str}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (check == System.Windows.Forms.DialogResult.Yes)
+                {
+                    MySqlConnection conn = new MySqlConnection(connect);
+                    conn.Open();
+                    string sql = "DELETE FROM service WHERE id_service = @num";
+                    MySqlCommand command = new MySqlCommand(sql, conn);
+                    command.Parameters.Add(new MySqlParameter("@num", this.dataGridView3.CurrentRow.Cells["id_service"].Value));
+                    command.ExecuteNonQuery();
+                    MessageBox.Show($"Запись {str} успешно удалена", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadService(conn);
+                    conn.Close();
+                }
             }
         }
 
@@ -376,58 +459,78 @@ namespace exam
         //обновление заявок
         private void button16_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            MySqlConnection conn = new MySqlConnection(connect);
-            conn.Open();
-            LoadApp(conn);
-            conn.Close();
+            if (check() == true)
+            {
+                string connect = "server=localhost; user=root; database=exam;";
+                MySqlConnection conn = new MySqlConnection(connect);
+                conn.Open();
+                LoadApp(conn);
+                conn.Close();
+            }
         }
 
         //добавление заявки
         private void button13_Click(object sender, EventArgs e)
         {
-            Form5 newForm = new Form5();
-            newForm.Show();
+            if (check() == true)
+            {
+                Form5 newForm = new Form5();
+                newForm.Show();
+            }
         }
 
         //изменение заявки
         private void button15_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            string str = this.dataGridView1.CurrentRow.Cells["id_application"].Value.ToString();
-            DialogResult check = MessageBox.Show($"Вы хотите изменить запись {str}?", "Изменение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (check == System.Windows.Forms.DialogResult.Yes)
+            if (check() == true)
             {
-                MySqlConnection conn = new MySqlConnection(connect);
-                conn.Open();
-                string s = this.dataGridView1.CurrentCell.OwningColumn.Name.ToString();
-                string sql = $"UPDATE application SET {s} = @new WHERE application.id_application = @num";
-                MySqlCommand command = new MySqlCommand(sql, conn);
-                command.Parameters.Add(new MySqlParameter("@new", this.dataGridView1.CurrentCell.Value));
-                command.Parameters.Add(new MySqlParameter("@num", this.dataGridView1.CurrentRow.Cells["id_application"].Value));
-                command.ExecuteNonQuery();
-                MessageBox.Show($"Запись {str} успешно изменена", "Изменение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadClient(conn);
-                conn.Close();
+                string connect = "server=localhost; user=root; database=exam;";
+                string str = this.dataGridView1.CurrentRow.Cells["id_application"].Value.ToString();
+                if (this.dataGridView1.CurrentCell.Value == null) { MessageBox.Show($"Введите корректное значение!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                else
+                {
+                    if ((int.TryParse(this.dataGridView1.CurrentCell.Value.ToString(), out int numericValue) == false) || (Int32.Parse(this.dataGridView1.CurrentCell.Value.ToString()) <= 0)) { MessageBox.Show($"Введите положительное число!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                    else
+                    {
+                        DialogResult check = MessageBox.Show($"Вы хотите изменить запись {str}?", "Изменение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (check == System.Windows.Forms.DialogResult.Yes)
+                        {
+                            MySqlConnection conn = new MySqlConnection(connect);
+                            conn.Open();
+                            string s = this.dataGridView1.CurrentCell.OwningColumn.Name.ToString();
+                            string sql = $"UPDATE application SET {s} = @new WHERE application.id_application = @num";
+                            MySqlCommand command = new MySqlCommand(sql, conn);
+                            command.Parameters.Add(new MySqlParameter("@new", this.dataGridView1.CurrentCell.Value));
+                            command.Parameters.Add(new MySqlParameter("@num", this.dataGridView1.CurrentRow.Cells["id_application"].Value));
+                            command.ExecuteNonQuery();
+                            MessageBox.Show($"Запись {str} успешно изменена", "Изменение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            LoadClient(conn);
+                            conn.Close();
+                        }
+                    }
+                }
             }
         }
 
         private void button14_Click(object sender, EventArgs e)
         {
-            string connect = "server=localhost; user=root; database=exam;";
-            string str = this.dataGridView1.CurrentRow.Cells["id_application"].Value.ToString();
-            DialogResult check = MessageBox.Show($"Вы хотите удалить запись {str}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (check == System.Windows.Forms.DialogResult.Yes)
+            if (check() == true)
             {
-                MySqlConnection conn = new MySqlConnection(connect);
-                conn.Open();
-                string sql = "DELETE FROM application WHERE id_application = @num";
-                MySqlCommand command = new MySqlCommand(sql, conn);
-                command.Parameters.Add(new MySqlParameter("@num", this.dataGridView1.CurrentRow.Cells["id_application"].Value));
-                command.ExecuteNonQuery();
-                MessageBox.Show($"Запись {str} успешно удалена", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadClient(conn);
-                conn.Close();
+                string connect = "server=localhost; user=root; database=exam;";
+                string str = this.dataGridView1.CurrentRow.Cells["id_application"].Value.ToString();
+                DialogResult check = MessageBox.Show($"Вы хотите удалить запись {str}?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (check == System.Windows.Forms.DialogResult.Yes)
+                {
+                    MySqlConnection conn = new MySqlConnection(connect);
+                    conn.Open();
+                    string sql = "DELETE FROM application WHERE id_application = @num";
+                    MySqlCommand command = new MySqlCommand(sql, conn);
+                    command.Parameters.Add(new MySqlParameter("@num", this.dataGridView1.CurrentRow.Cells["id_application"].Value));
+                    command.ExecuteNonQuery();
+                    MessageBox.Show($"Запись {str} успешно удалена", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadApp(conn);
+                    conn.Close();
+                }
             }
         }
     }

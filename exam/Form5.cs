@@ -28,7 +28,7 @@ namespace exam
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if ((textBox1.Text == "") || (textBox2.Text == "") || (textBox3.Text == "") || (maskedTextBox1.Text == ""))
+            if ((maskedTextBox2.Text == "") || (maskedTextBox3.Text == "") || (maskedTextBox4.Text == "") || (maskedTextBox1.Text == ""))
             {
                 MessageBox.Show("Заполните все поля корректно!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -39,9 +39,9 @@ namespace exam
                 conn.Open();
                 string sql = "INSERT INTO application (id_service, id_employee, id_client, date_registration)" + "VALUES(@id_service, @id_employee, @id_client, @date_registration)";
                 MySqlCommand command = new MySqlCommand(sql, conn);
-                command.Parameters.AddWithValue("id_service", textBox1.Text);
-                command.Parameters.AddWithValue("id_employee", textBox2.Text);
-                command.Parameters.AddWithValue("id_client", textBox3.Text);
+                command.Parameters.AddWithValue("id_service", maskedTextBox4.Text);
+                command.Parameters.AddWithValue("id_employee", maskedTextBox3.Text);
+                command.Parameters.AddWithValue("id_client", maskedTextBox2.Text);
                 command.Parameters.AddWithValue("date_registration", maskedTextBox1.Text);
                 command.ExecuteNonQuery();
                 conn.Close();
